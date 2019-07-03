@@ -58,8 +58,8 @@ Keyword Arguments:
 	Fields    - stores fields, i.e., u
 	Ainv      - factorization of PDE
 """
-function getConvDiffFEMParam(M::RegularMesh;   v=eye(M.dim,1), gd::Function=X->zeros(size(X,1)), 
-	                                           sig::Number=0.01,bc=(:dir,:neu,:neu,:neu,:neu,:neu), P=Diagonal(ones(prod(M.n+1))),
+function getConvDiffFEMParam(M::RegularMesh;   v=Matrix{Int}(I,M.dim,1), gd::Function=X->zeros(size(X,1)), 
+	                                           sig::Number=0.01,bc=(:dir,:neu,:neu,:neu,:neu,:neu), P=Diagonal(ones(prod(M.n.+1))),
 											   Fields=zeros(0),Ainv=getJuliaSolver())
 
 	if M.dim==2
@@ -76,7 +76,7 @@ function getConvDiffFEMParam(M::RegularMesh;   v=eye(M.dim,1), gd::Function=X->z
 	
 	xd         = getNodalGrid(M)[iddir,:]	
 	ud         = gd(xd)
-	ubc        = zeros(prod(M.n+1));
+	ubc        = zeros(prod(M.n.+1));
 	ubc[iddir] = ud
 	rbc        = Abc*ud;
 	

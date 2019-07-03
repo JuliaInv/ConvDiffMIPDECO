@@ -34,9 +34,9 @@ xa,ya,za = getCellCenteredAxes(M3D)
 (gx1,gy1,gz1,gx2,gy2,gz2) = getBoundaryCondition(gx, M3D)
 @test all(gx1.==0.0)
 @test all(gx2.==1.0)
-@test all(gy1.==repmat(xa,1,n[3]))
-@test all(gy2.==repmat(xa,1,n[3]))
-@test all(gz1.==repmat(xa,1,n[2]))
-@test all(gz2.==repmat(xa,1,n[2]))
+@test all(gy1.==repeat(xa,1,n[3]))
+@test all(gy2.==repeat(xa,1,n[3]))
+@test all(gz1.==repeat(xa,1,n[2]))
+@test all(gz2.==repeat(xa,1,n[2]))
 
 

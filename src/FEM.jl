@@ -135,7 +135,7 @@ for ii=1:4
 end
 
 
-nn = M.n+1;
+nn = M.n.+1;
 
 Ism = zeros(Int,0)
 Jsm = zeros(Int,0)
@@ -248,7 +248,7 @@ for ii=1:8
 end
 
 
-nn         = M.n+1;
+nn         = M.n.+1;
 
 
 Ism = zeros(Int,0)
@@ -291,7 +291,7 @@ for kk=1:nn[3]-1
 			end
 			for k=1:8
 				push!(Imass_const,nodes[k])
-				push!(Jmass_const,(ii-1)*(nn[1]-1)+jj+ prod(nn[1:2]-1)*(kk-1))
+				push!(Jmass_const,(ii-1)*(nn[1]-1)+jj+ prod(nn[1:2].-1)*(kk-1))
 				push!(Vmass_const,mass_const[k])
 	        end
 	    end

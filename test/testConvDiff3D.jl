@@ -26,7 +26,7 @@ err = zeros(length(N))
 times = zeros(length(N),3)
 for j=1:3
 	for k=1:length(N)
-		Ainvs = (getJuliaSolver(), getMUMPSsolver(),ConvDiff.getBICGSTB())
+		Ainvs = (getJuliaSolver(), getMUMPSsolver(),ConvDiffMIPDECO.getBICGSTB())
 	
 		n      = [N[k];N[k];N[k]]
 		M  = getRegularMesh(domain,n)

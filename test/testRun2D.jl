@@ -18,7 +18,7 @@ dobs, = getData(vec(ftrue),pFor)
 dobs += 0.4*randn(size(dobs))*mean(abs.(vec(dobs))) # add noise
 
 sigback     = 0.0
-Wt          = ones(prod(n+1))
+Wt          = ones(prod(n.+1))
 pMis        = getMisfitParam(pFor,Wt,dobs,SSDFun);
 
 
@@ -49,7 +49,7 @@ pInv = getInverseParam(M,modFun,reg,alpha,mref,
          boundsLow,boundsHigh,maxStep=maxStep,pcgMaxIter=cgit,pcgTol=pcgTol,
          minUpdate=minUpdate, maxIter = maxIter,HesPrec=HesPrec);
 
-mc,Dc,flag,His = projGNCG(0.0+0*ftrue[:],pInv,pMis);
+mc,Dc,flag,His = projGNCG(0*ftrue[:],pInv,pMis);
 fc = pInv.modelfun(mc)[1];
 
 println("time grad misfit: $(sum(His.timeGradMisfit))")

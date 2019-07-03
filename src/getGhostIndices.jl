@@ -21,10 +21,10 @@ function getGhostIndices(n::Array{Int})
 	dim = length(n)
 	
 	if dim==2
-		idg   = Array{Array{Int,1}}(4)
-		idgn  = Array{Array{Int,1}}(4)
+		idg   = Array{Array{Int,1}}(undef, 4)
+		idgn  = Array{Array{Int,1}}(undef, 4)
 		
-		idn    = reshape(collect(1:prod(n+2)),tuple(n+2...))::Array{Int,2}
+		idn    = reshape(collect(1:prod(n.+2)),tuple(n.+2...))::Array{Int,2}
 		idg[1] = vec(idn[1,2:end-1])
 		idg[2] = vec(idn[2:end-1,1])
 		idg[3] = vec(idn[end,2:end-1])
@@ -36,10 +36,10 @@ function getGhostIndices(n::Array{Int})
 		idgn[4] = vec(idn[2:end-1,end-1])
 		idint   = vec(idn[2:end-1,2:end-1])
 	else
-		idg   = Array{Array{Int,1}}(6)
-		idgn  = Array{Array{Int,1}}(6)
+		idg   = Array{Array{Int,1}}(undef, 6)
+		idgn  = Array{Array{Int,1}}(undef, 6)
 
-		idn   = reshape(collect(1:prod(n+2)),tuple(n+2...))::Array{Int,3}
+		idn   = reshape(collect(1:prod(n.+2)),tuple(n.+2...))::Array{Int,3}
 		idg[1] = vec(idn[1,2:end-1,2:end-1])
 		idg[2] = vec(idn[2:end-1,1,2:end-1])
 		idg[3] = vec(idn[2:end-1,2:end-1,1])

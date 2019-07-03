@@ -38,7 +38,7 @@ Outputs:
     b = [0; gd(dir)]          - vector to encode Dirichlet conditions.
 
 """
-function getConvDiffFEMConstraintsAMPL(M::RegularMesh; v=eye(M.dim,1), gd::Function=X->zeros(size(X,1)), 
+function getConvDiffFEMConstraintsAMPL(M::RegularMesh; v=Matrix{Int}(I,M.dim,1), gd::Function=X->zeros(size(X,1)), 
 	                                           sig::Number=0.01,bc=(:dir,:neu,:neu,:neu,:neu,:neu))
 
 # get mass and stiffness matrices for all nodes
@@ -49,13 +49,13 @@ else
 end
 
 # get indices of nodes on Dirichlet boundary and indices of interior nodes
-iddir = ConvDiff.getBoundaryIndicesFEM(M, bc)  # Dirichlet nodes
+iddir = ConvDiffMIPDECO.getBoundaryIndicesFEM(M, bc)  # Dirichlet nodes
 idint = setdiff(1:size(Afull,1),iddir) # interior nodes
 
 # take constraints from interior nodes and add rows for Dirichlet condition. 
 # note that rows correspond to test functions, which are not needed on Dirichlet 
 # boundary
-Id = speye(size(Afull,2))
+Id = sparse(I, size(Afull,2), size(Afull,2))
 #A  = [Afull[idint,:];  Id[iddir,:]]
 #B  = [Massc[idint,:]; spzeros(length(iddir),size(Massc,2))]
 A  = [Id[iddir,:];Afull[idint,:]]

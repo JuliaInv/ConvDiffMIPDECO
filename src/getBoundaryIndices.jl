@@ -81,7 +81,7 @@ Outputs:
 function getBoundaryIndicesFEM(M::RegularMesh, bc=(:dir,:neu,:neu,:neu,:neu,:neu))
 	
 	# get all nodes
-	ids    = reshape(1:prod(M.n+1),tuple(M.n+1...))
+	ids    = reshape(1:prod(M.n.+1),tuple(M.n.+1...))
 	iddir  = zeros(Int,0)
 	
 	if M.dim==2

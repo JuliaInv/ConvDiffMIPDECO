@@ -17,7 +17,7 @@ end
 import jInv.ForwardShare.getSensMatVec
 function getSensMatVec(v::Vector{Float64},m::Vector{Float64},pFor::ConvDiffFEMParam)
 	dUt = solveLinearSystem(pFor.A, pFor.MassConst*v, pFor.Ainv)[1]
-	dU             = zeros(prod(pFor.M.n+1),1)
+	dU             = zeros(prod(pFor.M.n.+1),1)
 	dU[pFor.idint] = dUt
 	return  pFor.P*dU
 end

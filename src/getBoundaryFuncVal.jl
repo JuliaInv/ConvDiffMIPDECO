@@ -18,7 +18,7 @@ function getBoundaryFuncVal(gd::Function, gn::Function, M::RegularMesh,bc=(:dir,
 			gdir = [gdir; vec(gdx[k])]
 		elseif bc[k]==:neu
 			inout = (k<=M.dim) ? -1 : 1
-			comp = mod.((1:2*M.dim)-1,M.dim)+1
+			comp = mod.((1:2*M.dim) .- 1,M.dim) .+ 1
 			gneu = [gneu; inout*M.h[comp[k]]*vec(gnx[k])]
 		end
 	end

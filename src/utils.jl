@@ -11,7 +11,7 @@ function getPaddedMesh(M::RegularMesh)
 	domainPad = copy(M.domain); 
 	domainPad[1:2:end] -= M.h/2
 	domainPad[2:2:end] += M.h/2
-	return getRegularMesh(domainPad,M.n+1)
+	return getRegularMesh(domainPad,M.n.+1)
 end
 
 

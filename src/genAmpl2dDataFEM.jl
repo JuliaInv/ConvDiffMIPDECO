@@ -5,7 +5,7 @@ genAmpl2dDataFEM(M::RegularMesh,SM::SparseMatrixCSC{Float64},MC::SparseMatrixCSC
 #-------------------------------------------------------------------------------
 # Generating lookup table for variables u and w
 #-------------------------------------------------------------------------------
-  nn1  = M.n+1 
+  nn1  = M.n.+1 
   nn2 = nn1-1 
   np1 = prod(nn1)
   np2 = prod(nn2)

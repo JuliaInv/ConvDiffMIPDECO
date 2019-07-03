@@ -1,7 +1,6 @@
 using ConvDiffMIPDECO
 using Test
 using jInv.Mesh
-using jInvVis
 
 println("=== 2D test === ")
 

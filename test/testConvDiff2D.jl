@@ -26,7 +26,7 @@ bicg = (A,b; M=identity,tol=1e-10,maxIter=500,out=1)-> bicgstb(A,b,M1=identity,t
 times = zeros(length(N),3)
 for j=1:2
 	for k=1:length(N)
-		Ainvs = (getJuliaSolver(), getMUMPSsolver(), ConvDiff.getBICGSTB(out=1))
+		Ainvs = (getJuliaSolver(), getMUMPSsolver(), ConvDiffMIPDECO.getBICGSTB(out=1))
 
 	n      = [N[k];N[k]]
 	M  = getRegularMesh(domain,n)
