@@ -26,7 +26,7 @@ Fields:
 	Fields    - stores fields, i.e., u
 	Ainv      - factorization of PDE
 """
-type ConvDiffFEMParam <: ForwardProbType
+mutable struct ConvDiffFEMParam <: ForwardProbType
 	M :: RegularMesh
 	A :: SparseMatrixCSC{Float64} # stiffness matrix
 	MassConst::SparseMatrixCSC{Float64} # mass matrix for piecewise constant source

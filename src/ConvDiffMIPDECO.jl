@@ -1,12 +1,14 @@
-module ConvDiff
-using JuMP
-# using AmplNLWriter
+module ConvDiffMIPDECO
+
 using jInv.Mesh
 using jInv.ForwardShare
 using jInv.Utils
 using jInv.LinearSolvers
 using jInv.InverseSolve
 using KrylovMethods
+using LinearAlgebra
+using SparseArrays
+using Printf
 
 function getBICGSTB(;PC=:jac,maxIter=1000,out=0,tol=1e-10)
 	bicg = (A,b; M=identity,tol=1e-10,maxIter=500,out=1)-> 	
@@ -38,7 +40,7 @@ Fields:
 	Ainv   - factorization of PDE
 
 """
-type ConvDiffParam <: ForwardProbType
+mutable struct ConvDiffParam <: ForwardProbType
 	M :: RegularMesh
 	A :: SparseMatrixCSC{Float64}
 	P :: AbstractArray{Float64}
@@ -100,15 +102,5 @@ include("getConvDiffFEMConstraintsAMPL.jl")
 include("mipdecoHeuristic.jl")
 include("rounding.jl")
 include("dilation.jl")
-# include("regularizers.jl")
-# include("RBF.jl")
-# include("io.jl")
-# include("findMaxCurvature.jl")
-# include("getRandomBoreholes2D.jl")
-# include("genAmpl2dDataFEM.jl")
-# include("printOutput.jl")
-# include("printOri3D.jl")
-# include("genAMPLFDM2dData.jl")
-# include("printOutput3D.jl")
-# include("solveNLPRelaxation2D.jl")
+
 end

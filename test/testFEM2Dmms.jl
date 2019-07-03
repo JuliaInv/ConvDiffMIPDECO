@@ -1,10 +1,9 @@
 using jInv.LinearSolvers
-using Base.Test
+using Test
 using ConvDiff
 using jInv.ForwardShare
 using jInv.Mesh
 using PyPlot
-using jInvVis
 
 domain = [0 1. 0 1]
 
