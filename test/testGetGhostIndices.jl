@@ -1,5 +1,5 @@
 using Test
-using ConvDiff
+using ConvDiffMIPDECO
 using jInv.Mesh
 
 domain = [0 1. 0 1 0 1]

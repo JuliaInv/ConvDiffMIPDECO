@@ -1,6 +1,6 @@
 
 using PyPlot
-using ConvDiff
+using ConvDiffMIPDECO
 using jInv.Mesh
 using jInvVis
 using jInv.LinearSolvers

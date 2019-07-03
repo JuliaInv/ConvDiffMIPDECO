@@ -1,6 +1,6 @@
 using jInv.LinearSolvers
 using Test
-using ConvDiff
+using ConvDiffMIPDECO
 using jInv.ForwardShare
 using jInv.Mesh
 using PyPlot
