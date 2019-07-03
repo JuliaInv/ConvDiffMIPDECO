@@ -3,8 +3,6 @@ using Test
 using ConvDiffMIPDECO
 using jInv.ForwardShare
 using jInv.Mesh
-using LinearAlgebra
-using SparseArrays
 
 domain = [0 1. 0 1]
 

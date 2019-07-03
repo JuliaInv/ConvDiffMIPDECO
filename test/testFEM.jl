@@ -1,8 +1,6 @@
 using ConvDiffMIPDECO
 using Test
 using jInv.Mesh
-using MAT
-using PyPlot
 
 
 domain = [0. 3. 0 1.]

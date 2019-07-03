@@ -3,7 +3,6 @@ using Test
 using ConvDiffMIPDECO
 using jInv.ForwardShare
 using jInv.Mesh
-using PyPlot
 
 domain = [0 1. 0 1]
 

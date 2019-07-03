@@ -1,9 +1,6 @@
 using ConvDiffMIPDECO
 using Test
 using jInv.Mesh
-using MAT
-using PyPlot
-
 
 domain = [0. 3. 0 1. 0 2.]
 n      = 3*[7 9 12]-1

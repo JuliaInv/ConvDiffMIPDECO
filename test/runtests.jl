@@ -1,3 +1,7 @@
+using LinearAlgebra
+using SparseArrays
+
+
 println("\t=== test MIPDECO julia package ===")
 include("testGetBoundaryCondition.jl")
 include("testGetBoundaryFuncVal.jl")
