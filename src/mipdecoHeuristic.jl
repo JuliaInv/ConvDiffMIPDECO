@@ -6,7 +6,7 @@ function heuristicKnapsack(mc,gc,delta)
     cIndex = reverse(sortperm(abs.(gc)))
     wCount = 0
 	for j=1:length(cIndex)
-		ind = cIndex[Int(j)] 
+		ind = cIndex[Int(j)]
 			  if  gc[ind] >= 0 && mc[ind] == 1
 				mt[ind] = 0
 				pred -= gc[ind]
@@ -16,16 +16,16 @@ function heuristicKnapsack(mc,gc,delta)
 				pred += gc[ind]
                 wCount += 1
 			  end
-            if (wCount >= delta) 
+            if (wCount >= delta)
                 break
             end
-	  end	
+	  end
     return mt,pred
 end
 
 
 
-function  mipdecoHeuristic(mc::BitArray{1}, pInv::InverseParam, pMis; 
+function  mipdecoHeuristic(mc::BitArray{1}, pInv::InverseParam, pMis;
 	                out::Int=2, getNeighborhood::Function=x->trues(size(x)),
 					delta::Int=32, sigma::Float64=0.25,outFile::String="")
 
@@ -53,44 +53,44 @@ function  mipdecoHeuristic(mc::BitArray{1}, pInv::InverseParam, pMis;
 		f = open(outFile, "w")
 		write(f, outStr)
 	end
-	
+
       outStr = @sprintf("%3d\t%3.2e\t%3.2e\t%3.2e\t%3.2e\t%3.2e\t%3.2e\t%3d\n",
 		         iter, Fc, Rc,alpha[1],Jc/J0,0,0,delta)
       if out>=2; print(outStr); end
       if !isempty(outFile)
 		  write(f, outStr)
 	  end
-	
+
 	while (delta > 0)
 	  iter  += 1
-	  tic()
-      mt,pred = heuristicKnapsack(mc,gc,delta)
-	  toMIP = toq()
+	  toMIP = @elapsed begin
+          mt,pred = heuristicKnapsack(mc,gc,delta)
+      end
       pred *=-1
       timeMIP += toMIP
-	 
+
       Jt,gt,Dt,Ft,Rt,toF,toR = jInvObj(mt,pMis,pInv)
       timeF += toF
-      timeR += toR	
+      timeR += toR
 	  ared  = Jc - Jt  	# actual reduction
 	  deltaO = delta
-        
+
       outStr = @sprintf("%3d\t%3.2e\t%3.2e\t%3.2e\t%3.2e\t%3.2e\t%3.2e\t%3d\n",
 		         iter, Fc, Rc,alpha[1],Jc/J0,pred,ared,delta)
       if out>=2; print(outStr); end
       if !isempty(outFile)
 		  write(f, outStr)
 	  end
-      
+
         if ared > 0
 	    mc .= mt
 	    (Jc,Dc,Fc,Rc) = (Jt,Dt,Ft,Rt)
-            
+
 	    if ared >= sigma*pred;delta *= 2;end
 	      gc = gt
           rId = getNeighborhood(mc)
           gc .*= rId
-        else  
+        else
          delta = floor(.5*delta)
 	  end
 	  His[iter,:] = [Jc Jt deltaO]
