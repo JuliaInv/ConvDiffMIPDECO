@@ -99,7 +99,7 @@ for mk = 1:length(Meshes)
 			Sources[:,ak] = wr
 			PredictedData[:,ak] = Dc
 
-			iter = findlast(His.F>0)
+			iter = findlast(His.F .> 0)
 			Mis[ak] = His.F[iter]
 			Reg[ak] = His.Rc[iter]/alphas[ak]
 	    end
