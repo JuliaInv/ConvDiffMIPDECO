@@ -16,7 +16,7 @@ gn     = X -> ones(size(X,1))
 pFor   = getConvDiffParam(M,v,sig=.5,gd=gd,gn=gn,bc=bc)
 
 m0     = zeros(tuple(n...))
-m0[10:20,15:25] =1.;
+m0[10:20,15:25] .=1.;
 isOK, his = checkDerivative(vec(m0),pFor,out=true)
 @test isOK
 v = randn(M.nc)
@@ -36,7 +36,7 @@ gn     = X -> ones(size(X,1))
 pFor   = getConvDiffParam(M,v,sig=.5,bc=bc)
 
 m0              = zeros(tuple(n...))
-m0[3:4,4:6,4:7] =1.;
+m0[3:4,4:6,4:7] .=1.;
 isOK, his = checkDerivative(vec(m0),pFor,out=true)
 @test isOK
 v = randn(M.nc)

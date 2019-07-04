@@ -4,6 +4,8 @@ using jInv.ForwardShare
 using jInv.LinearSolvers
 using KrylovMethods
 using jInv.Mesh
+using SparseArrays
+using LinearAlgebra
 
 domain = [0 1. 0 3. 0 2.]
 
@@ -27,19 +29,19 @@ times = zeros(length(N),3)
 for j=1:3
 	for k=1:length(N)
 		Ainvs = (getJuliaSolver(), getMUMPSsolver(),ConvDiffMIPDECO.getBICGSTB())
-	
-		n      = [N[k];N[k];N[k]]
-		M  = getRegularMesh(domain,n)
-		xc = getCellCenteredGrid(M)
-	
-		pFor   = getConvDiffParam(M,V,sig=sig,gd=u,bc=bc,Ainv=Ainvs[j])
 		
-		dobs,pFor = getData(vec(f(xc)), pFor)
+		nk      = [N[k];N[k];N[k]]
+		Mk  = getRegularMesh(domain,nk)
+		xck = getCellCenteredGrid(Mk)
+	
+		pFork   = getConvDiffParam(Mk,V,sig=sig,gd=u,bc=bc,Ainv=Ainvs[j])
 		
-		utrue = u(xc)
-		tic()
-		err[k] = norm(pFor.Fields - utrue,Inf)/norm(utrue,Inf)
-		times[k,j] = toq()
+		dobsk,pFork = getData(vec(f(xck)), pFork)
+		
+		utruek = u(xck)
+		times[k,j] = @elapsed begin
+			err[k] = norm(pFork.Fields - utruek,Inf)/norm(utruek,Inf)
+		end
 		println("err[$k] = $(err[k])")
 	end
 	@test all(abs.(diff(log2.(err))).>0.7)

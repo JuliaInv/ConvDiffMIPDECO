@@ -118,7 +118,7 @@ function getConvectionMatrix(M::RegularMesh,v::Array{Float64})
 	n   = M.n
 	h   = M.h
 	dim = M.dim
-	v  = reshape(v,prod(n+2),dim)
+	v  = reshape(v,prod(n.+2),dim)
 
 	if dim==2
     	dxf = ddxfwd(n[1]+2)./(h[1])
@@ -126,8 +126,8 @@ function getConvectionMatrix(M::RegularMesh,v::Array{Float64})
     	dyf = ddxfwd(n[2]+2)./(h[2])
     	dyb = ddxbwd(n[2]+2)./(h[2])
     	
-    	Dxf = kron(sparse(1.0, n[2]+2, n[2]+2), dxf)
-    	Dxb = kron(sparse(1.0, n[2]+2, n[2]+2), dxb)
+    	Dxf = kron(sparse(1.0I, n[2]+2, n[2]+2), dxf)
+    	Dxb = kron(sparse(1.0I, n[2]+2, n[2]+2), dxb)
     	Dyf = kron(dyf, sparse(1.0I, n[1]+2, n[1]+2))
     	Dyb = kron(dyb, sparse(1.0I, n[1]+2, n[1]+2))
     	return Diagonal(max.(v[:,1],0))*Dxb + Diagonal(min.(v[:,1],0))*Dxf + 

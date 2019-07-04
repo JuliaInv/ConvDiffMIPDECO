@@ -26,19 +26,19 @@ for j=1:2
 		Ainvs = (getJuliaSolver(), getMUMPSsolver())
     	
     	
-		n      = [N[k];N[k]]
-		M  = getRegularMesh(domain,n)
-		xc = getCellCenteredGrid(M)
-		xn = getNodalGrid(M)
-		pFor = getConvDiffFEMParam(M,sig=sig,v=v,bc=(:dir,:neu,:neu,:neu),gd=u,Ainv=Ainvs[j])
+		nk      = [N[k];N[k]]
+		Mk  = getRegularMesh(domain,nk)
+		xck = getCellCenteredGrid(Mk)
+		xnk = getNodalGrid(Mk)
+		pFork = getConvDiffFEMParam(Mk,sig=sig,v=v,bc=(:dir,:neu,:neu,:neu),gd=u,Ainv=Ainvs[j])
 		
-		dobs,pFor = getData(f(xc), pFor)
+		dobsk,pFork = getData(f(xck), pFork)
 		# pFor.Fields -= mean(pFor.Fields)
-		utrue = u(xn)
+		utruek = u(xnk)
 		# utrue -= mean(utrue)
-		tic()
-		err[k] = norm(pFor.Fields - utrue,Inf)/norm(utrue,Inf)
-		times[k,j]= toq()
+		times[k,j] = @elapsed begin
+			err[k] = norm(pFork.Fields - utruek,Inf)/norm(utruek,Inf)
+		end
 		println(err[k])
 end
 @test all(abs.(diff(log2.(err))).>1.2)

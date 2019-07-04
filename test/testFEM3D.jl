@@ -3,7 +3,7 @@ using Test
 using jInv.Mesh
 
 domain = [0. 3. 0 1. 0 2.]
-n      = 3*[7 9 12]-1
+n      = 3*[7 9 12] .- 1
 M      = getRegularMesh(domain,n)
 Mass, Mass_const, SM = getFEMMatrices3D(M)
 

@@ -3,7 +3,7 @@ using jInv.Mesh
 using jInv.ForwardShare
 using jInv.InverseSolve
 using jInv.LinearSolvers
-
+using Statistics
 
 function runInv()
 domain = [0 3. -0.5 1.5]

@@ -11,11 +11,9 @@ domain = [-1 1. -1 1]
 n      = [32 32]
 M      = getRegularMesh(domain,n)
 Ainv   = getJuliaSolver()
-Ainv   = ConvDiffMIPDECO.getBICGSTB(PC=:ssor)
-Ainv   = getMUMPSsolver()
 pFor   = getConvDiffFEMParam(M,sig=.0001,Ainv=Ainv)
 m0     = zeros(tuple(n...))
-m0[10:20,15:25] =1.;
+m0[10:20,15:25] .=1.;
 isOK, his = checkDerivative(vec(m0),pFor,out=true)
 @test isOK
 
@@ -32,7 +30,7 @@ clear!(Ainv)
 pFor   = getConvDiffFEMParam(M,sig=.5,Ainv=Ainv)
 
 m0              = zeros(tuple(n...))
-m0[3:4,4:6,4:7] =1.;
+m0[3:4,4:6,4:7] .=1.;
 isOK, his = checkDerivative(vec(m0),pFor,out=true)
 @test isOK
 

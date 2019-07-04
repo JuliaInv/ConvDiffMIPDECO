@@ -3,6 +3,8 @@ using Test
 using ConvDiffMIPDECO
 using jInv.ForwardShare
 using jInv.Mesh
+using LinearAlgebra
+using SparseArrays
 
 domain = [0 1. 0 1]
 
@@ -28,18 +30,18 @@ for j=1:2
 	for k=1:length(N)
 		Ainvs = (getJuliaSolver(), getMUMPSsolver(), ConvDiffMIPDECO.getBICGSTB(out=1))
 
-	n      = [N[k];N[k]]
-	M  = getRegularMesh(domain,n)
-	xc = getCellCenteredGrid(M)
+	nk      = [N[k];N[k]]
+	Mk  = getRegularMesh(domain,nk)
+	xck = getCellCenteredGrid(Mk)
 
-	pFor   = getConvDiffParam(M,V,sig=sig,gd=u,gn=ux,bc=bc,Ainv=Ainvs[j])
+	pFork   = getConvDiffParam(Mk,V,sig=sig,gd=u,gn=ux,bc=bc,Ainv=Ainvs[j])
 	
-	dobs,pFor = getData(f(xc), pFor)
+	dobsk,pFork = getData(f(xck), pFork)
 	
-	utrue = u(xc)
-	tic()
-	err[k] = norm(pFor.Fields - utrue,Inf)/norm(utrue,Inf)
-	times[k,j]= toq()
+	utruek = u(xck)
+	times[k,j]= @elapsed begin
+		err[k] = norm(pFork.Fields - utruek,Inf)/norm(utruek,Inf)
+	end
 	println("err[$k] = $(err[k])")
 end
 @test all(abs.(diff(log2.(err))).>0.8)

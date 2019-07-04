@@ -14,12 +14,12 @@ function getConvDiffMatrix(M::RegularMesh,sig::Float64,v,iddir::Array{Int,1},idn
 	Apad = sig*Lap + Conv
 	
 	# projection for gost point neighbors
-	I          = sparse(I, prod(M.n.+2), prod(M.n.+2))[:,idint]
-	I[iddir,:] = -I[iddirn,:]  # dirichlect boundary points
-	I[idneu,:] =  I[idneun,:]  # neuman boundary points
+	Id          = sparse(1.0I, prod(M.n.+2), prod(M.n.+2))[:,idint]
+	Id[iddir,:] = -Id[iddirn,:]  # dirichlect boundary points
+	Id[idneu,:] =  Id[idneun,:]  # neuman boundary points
 	
 	# matrix for interior nodes
-	A    = Apad[idint,:]*I
+	A    = Apad[idint,:]*Id
 	
 	# boundary nodes
 	Adir = Apad[idint,iddir] 
