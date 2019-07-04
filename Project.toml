@@ -17,6 +17,7 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 jInv = "3dacf901-f8cd-5544-86ed-7a705f85c244"
 MUMPSjInv = "bf6389e2-cca1-5e17-ac22-36425c4ccbb4"
 MAT = "23992714-dd62-5051-b70f-ba57cb901cac"
+DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

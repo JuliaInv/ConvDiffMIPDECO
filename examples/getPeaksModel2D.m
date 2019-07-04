@@ -16,16 +16,16 @@ imagesc(S);
 axis equal
 
  save('Peaks2D.mat','W','domain','m')
-
+return
 %%
-% load Peaks2D
+load Peaks2D.mat
 x1 = linspace(domain(1),domain(2),m(1));
 x2 = linspace(domain(3),domain(4),m(2));
 
 figure(1); clf;
 imagesc(x1,x2,flipud(W'))
 axis equal tight
-figDir = '/Users/lruthot/Dropbox/Projects/2018-MIPDECOpaper/images/2Dpeaks';
+figDir = '/Users/lruthot/Dropbox/Projects/2019-MIPDECOpaper/images/figSources/';
 set(gca,'FontSize',20)
  printFigure(gcf,fullfile(figDir,'2Dpeaks-W.png'),'printFormat','.png','printOpts','-dpng');
 
@@ -37,6 +37,6 @@ imagesc(x1,x2,flipud(utrue'))
 hold on;
 plot(rec(:,1),rec(:,2),'.r','MarkerSize',20)
 axis equal tight
-figDir = '/Users/lruthot/Dropbox/Projects/2018-MIPDECOpaper/images/2Dpeaks';
+figDir = '/Users/lruthot/Dropbox/Projects/2019-MIPDECOpaper/images/figSources/';
 set(gca,'FontSize',20)
  printFigure(gcf,fullfile(figDir,'2Dpeaks-utrue.png'),'printFormat','.png','printOpts','-dpng');
