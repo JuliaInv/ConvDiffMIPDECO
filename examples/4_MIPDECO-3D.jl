@@ -1,10 +1,8 @@
 
 using ConvDiffMIPDECO
-using PyPlot
 using jInv.Mesh
 using jInv.ForwardShare
 using jInv.InverseSolve
-using jInvVis
 using jInv.LinearSolvers
 using MAT
 
@@ -15,27 +13,25 @@ m          = [96 48 48]
 noiseLevel = 0.1
 
 
-data = matread("$(dataset).mat")
+filename= joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples","$(dataset).mat")
+data = matread(filename)
 domain = data["domain"]
 v      = data["v"]
-sig    = data["sig"]  
+sig    = data["sig"]
 dtrue  = data["dtrue"]
 rec    = data["rec"];
 mf     = round.(Int64,data["m"])
 
 M = getRegularMesh(domain,m)
 
-resFile = "results/$(dataset)-$(reg)-noise-$(noiseLevel)-$(m[1])x$(m[2])x$(m[3]).mat"
+resFile = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
+                 "$(dataset)-$(reg)-noise-$(noiseLevel)-$(m[1])x$(m[2])x$(m[3]).mat")
 res = matread(resFile)
 dobs = res["dobs"]
 
-idx = 12;
-loglog(res["Reg"],res["Mis"],"-ob")
-loglog(res["Reg"][idx],res["Mis"][idx],"-or")
-axis("equal")
 
-alpha = res["alphas"][idx]
-
+srcRelaxed = res["SourcesRelaxed"]
+alphaRelaxed = res["alphaRelaxed"]
 
 # build inverse problem
 Mfine = getRegularMesh(domain,vec(data["m"]));
@@ -48,48 +44,39 @@ P = interpmat(x1,x2,x3, rec3D);
 pFor = getConvDiffFEMParam(M,v=v,sig=sig,P=P,Ainv=getMUMPSsolver());
 
 ## configure misfit
-Wt         = ones(size(dobs))/sqrt(mf[3])          
+Wt         = ones(size(dobs))/sqrt(mf[3])
 sigback    = 0.0
-pMis       = getMisfitParam(pFor,Wt,dobs,SSDFun) 
-	
+pMis       = getMisfitParam(pFor,Wt,dobs,SSDFun)
+
 ## Configure regularization
-mref       = zeros(M.nc)           
-reg        = (m,mr,M,I=1.0) -> wTVReg(m,mr,M,eps=1e-8)  
-# reg        = (m,mr,M,I=1.0) -> wTVReg(m,mr,M,eps=1e-8)  
+mref       = zeros(M.nc)
+reg        = (m,mr,M,I=1.0) -> wTVReg(m,mr,M,eps=1e-8)
+# reg        = (m,mr,M,I=1.0) -> wTVReg(m,mr,M,eps=1e-8)
 
 ## Configure optimization
 maxIter    = 50
 minUpdate  = 1e-3
 HesPrec    = getSSORRegularizationPreconditioner(1.0,1e-15,50)
-cgit       = 5 
+cgit       = 5
 pcgTol     = 1e-1
 modFun     = identityMod
 boundsLow  = 0*ones(M.nc)
 boundsHigh = 1*ones(M.nc)
 maxStep	   = 0.1*maximum(boundsHigh)
 
-## store the configuration 
-pInv       = getInverseParam(M,modFun,reg,alpha,mref,
+## store the configuration
+pInv       = getInverseParam(M,modFun,reg,alphaRelaxed,mref,
                              boundsLow,boundsHigh,maxStep=maxStep,
                             pcgMaxIter=cgit,pcgTol=pcgTol,minUpdate=minUpdate,maxIter=maxIter,
                             HesPrec=HesPrec);
 
-
 roundings = (s->naiveRounding(s),s->massPreservingRounding(s), s->objGapRedRounding(s,pMis,pInv))
+roundingsNames = ["naive","massPreserving","gapReduction"];
 neighborhoods = (s->trues(size(s)), s->dilation(s,pInv.MInv,1), s->dilation(s,pInv.MInv,2))
-
-M2D = getRegularMesh(domain[1:4],m[1:2])
-for k=1:length(roundings)
-    subplot(length(roundings),1,k)
-    src0 = reshape(roundings[k](res["Sources"][:,idx]),tuple(m...))
-    viewImage2D(src0[:,:,24],M2D)
-    axis("equal")
-end
-
+neighborhoodsNames = ["all","dilation1", "dilation2"];
 
 nrow = length(roundings)
 ncol = length(neighborhoods)
-pInv.maxIter=50
 
 results = zeros(m[1],m[2],m[3],length(roundings),length(neighborhoods))
 init = zeros(m[1],m[2],m[3],length(roundings),length(neighborhoods))
@@ -98,30 +85,25 @@ times = zeros(length(roundings),length(neighborhoods))
 
 for k1=1:length(roundings)
     for k2=1:length(neighborhoods)
-        src0 = roundings[k1](res["Sources"][:,idx])
+        println("\n --- mipdecoHeuristic starting with $(roundingsNames[k1]) using $(neighborhoodsNames[k2])--")
+        src0 = roundings[k1](srcRelaxed)
         init[:,:,:,k1,k2] = src0
-        tic()
-        mcTR,DcTR,flagTR,his = mipdecoHeuristic(src0,pInv,pMis,getNeighborhood=neighborhoods[k2],out=0)
-        His[:,:,k1,k2] = his;
-        times[k1,k2] = toq()
-        
+
+        times[k1,k2] = @elapsed begin
+            mcTR,DcTR,flagTR,his = mipdecoHeuristic(src0,pInv,pMis,getNeighborhood=neighborhoods[k2],out=0)
+            His[:,:,k1,k2] = his;
+        end
+        println("\t\t initial obj. :\t\t$(His[1,1,k1,k2]) ")
+        println("\t\t final obj. :\t\t$(His[nIter,1,k1,k2]) ")
+        println("\t\t relative :\t\t\t$(His[nIter,1,k1,k2]/His[1,1,k1,k2]) ")
+        println("\t\t no. PDE solves:\t$(2*count(His[:,1,k1,k2].>0)) ")
+        println("\t\t runtime: \t\t\t$(times[k1,k2])")
         results[:,:,:,k1,k2] = mcTR
-        subplot(nrow,ncol,k2+(k1-1)*ncol)
-        viewImage2D(results[:,:,24,k1,k2],M2D)
-        axis("equal")
     end
 end
+res["SourcesMIPDECO"]=results
+res["InitMIPDECO"]=init
+res["HisMIPDECO"] = His
+res["timesMIPDECO"] = times
 
-
-
-res["MIPDECO"]=results
-res["MIPDECOinit"]=init
-res["His"] = His
-res["times"] = times
-
-# resFirele
 matwrite(resFile,res)
-
-
-
-
