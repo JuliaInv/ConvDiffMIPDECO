@@ -26,6 +26,7 @@ resFile = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
 res = matread(resFile)
 dobs = res["dobs"]
 
+srcRelaxed = res["SourcesRelaxed"]
 alphaRelaxed = res["alphaRelaxed"]
 
 # build inverse problem
@@ -80,8 +81,17 @@ println("solve using alpha = $(pInv.alpha)")
 for k1=1:length(roundings)
     for k2=1:length(neighborhoods)
         println("\n --- mipdecoHeuristic starting with $(roundingsNames[k1]) using $(neighborhoodsNames[k2])--")
-        src0 = roundings[k1](res["Sources"][:,idx])
+        (t0,nsolve0) = (pFor.Ainv.solveTime, pFor.Ainv.nSolve)
+        roundTime = @elapsed begin
+            src0 = roundings[k1](srcRelaxed)
+        end
+        println("\t\ttime for rounding: $roundTime")
+        dt  = pFor.Ainv.solveTime - t0
+        println("\t\ttime for PDEsolves: $dt")
+        dn = pFor.Ainv.nSolve - nsolve0
+        println("\t\tnumber of PDEsolves: $dn")
         init[:,:,k1,k2] = src0
+
         times[k1,k2] = @elapsed begin
             mcTR,DcTR,flagTR,his = mipdecoHeuristic(src0,pInv,pMis,getNeighborhood=neighborhoods[k2],out=0)
             results[:,:,k1,k2] = mcTR

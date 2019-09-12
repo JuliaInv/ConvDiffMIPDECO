@@ -1,9 +1,10 @@
 
-using PyPlot
+# using PyPlot
 using ConvDiffMIPDECO
 using jInv.Mesh
-using jInvVis
+# using jInvVis
 using jInv.LinearSolvers
+using MUMPSjInv
 
 domain      = [0 2 0 1]
 nc		    = [128 64]*4
@@ -46,30 +47,30 @@ println("relative error (PDE solve FEM vs FD): $(norm(vec(getNodalAverageMatrix(
 """
 fdAnisoTV(W,Mc)
 
-prototype implementation of regularizer using for loops 
+prototype implementation of regularizer using for loops
 """
 function fdAnisoTV(W,Mc)
     W = reshape(W,Mc.n[1], Mc.n[2])
     L = Mc.h
-    
+
     Reg = 0.0;
     # compute first term of regularizer (derivatives in first dimension)
     for i=2:Mc.n[1]
         for j=1:Mc.n[2]
-            Reg += Mc.h[2]*abs(W[i,j] - W[i-1,j])                
+            Reg += Mc.h[2]*abs(W[i,j] - W[i-1,j])
         end
     end
     # compute first term of regularizer (derivatives in second dimension)
     for i=1:Mc.n[1]
         for j=2:Mc.n[2]
-            Reg += Mc.h[1]*abs(W[i,j] - W[i,j-1])                
+            Reg += Mc.h[1]*abs(W[i,j] - W[i,j-1])
         end
     end
     return Reg
 end
 
 Rfd = fdAnisoTV(w,Mc)
-   
+
 using jInv.InverseSolve
 Rjinv = anisoTVReg(vec(w),0*vec(w),Mc,eps=0)[1]
 println("Relative error (regularizer for loop): $(abs(Rfd-Rjinv)/abs(Rjinv))")
@@ -84,14 +85,14 @@ here, assume that v = [1;0]
 function fdPDE(U,Mc;c=0.01)
     Up = zeros(Mc.n[1]+2, Mc.n[2]+2)
     Up[2:end-1,2:end-1] = reshape(U,Mc.n[1], Mc.n[2])
-    
+
     # left boundary: 0-Dirichlet
     Up[1,2:end-1] = -U[1,:]
-    # right boundary: 0-Neumann    
+    # right boundary: 0-Neumann
     Up[end,2:end-1] = U[end,:]
-    # top boundary: 0-Neumann    
+    # top boundary: 0-Neumann
     Up[2:end-1,end] = U[:,end]
-    # bottom boundary: 0-Neumann    
+    # bottom boundary: 0-Neumann
     Up[2:end-1,1] = U[:,1]
 
     L = Mc.h
@@ -100,7 +101,7 @@ function fdPDE(U,Mc;c=0.01)
     V = zeros(Mc.n[1]+2, Mc.n[2]+2)
     for i=2:Mc.n[1]+1
         for j=2:Mc.n[2]+1
-        V[i,j] = (c/(L[1]^2))*(2*Up[i,j]-Up[i-1,j]-Up[i+1,j]) + 
+        V[i,j] = (c/(L[1]^2))*(2*Up[i,j]-Up[i-1,j]-Up[i+1,j]) +
                  (c/(L[2]^2))*(2*Up[i,j]-Up[i,j-1]-Up[i,j+1]) +
                  (Up[i,j]-Up[i-1,j])/L[1]
         end
@@ -127,4 +128,3 @@ viewImage2D(abs.(Vfd-Vjinv),Mc)
 colorbar()
 
 println("relative error (conv diff for loop): $(norm(vec(Vjinv-Vfd))/norm(vec(Vjinv)))")
-

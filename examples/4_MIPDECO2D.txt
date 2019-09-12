@@ -1,0 +1,91 @@
+solve using alpha = 0.008531678524172805
+
+ --- mipdecoHeuristic starting with naive using all--
+Trust region on entire space: MisFit, Regularizer, Total 0.015250229614103326 , 0.033847939507928124	, 0.04909816912203145
+Time to compute Data term, Regularizer, and MIP: 1.4557876459999992, 2.0384538399999994, 0.3616031769999999 
+
+		 initial obj. :		0.1602476706983794 
+		 final obj. :		0.04909816912203145 
+		 relative :			0.3063892842127158 
+		 no. PDE solves:	100 
+		 runtime: 			4.556591784
+
+ --- mipdecoHeuristic starting with naive using dilation1--
+Trust region on entire space: MisFit, Regularizer, Total 0.05567479233800533 , 0.028418607767646705	, 0.08409340010565204
+Time to compute Data term, Regularizer, and MIP: 0.600977151, 0.37072353999999996, 0.058857221 
+
+		 initial obj. :		0.1603637307857562 
+		 final obj. :		0.08409340010565204 
+		 relative :			0.5243916420103727 
+		 no. PDE solves:	72 
+		 runtime: 			4.620613601
+
+ --- mipdecoHeuristic starting with naive using dilation2--
+Trust region on entire space: MisFit, Regularizer, Total 0.055200375051058036 , 0.02837678859988421	, 0.08357716365094224
+Time to compute Data term, Regularizer, and MIP: 0.849666789, 0.569557332, 0.07401526899999998 
+
+		 initial obj. :		0.1603637307857562 
+		 final obj. :		0.08357716365094224 
+		 relative :			0.5211724823401634 
+		 no. PDE solves:	98 
+		 runtime: 			3.978848446
+
+ --- mipdecoHeuristic starting with massPreserving using all--
+Trust region on entire space: MisFit, Regularizer, Total 0.014988610675285114 , 0.03404986303449536	, 0.04903847370978047
+Time to compute Data term, Regularizer, and MIP: 0.79991368, 0.4231757279999999, 0.09058300700000001 
+
+		 initial obj. :		0.13093590666445365 
+		 final obj. :		0.04903847370978047 
+		 relative :			0.3745227337482774 
+		 no. PDE solves:	94 
+		 runtime: 			1.321209133
+
+ --- mipdecoHeuristic starting with massPreserving using dilation1--
+Trust region on entire space: MisFit, Regularizer, Total 0.05586193445378406 , 0.02798634003975523	, 0.0838482744935393
+Time to compute Data term, Regularizer, and MIP: 0.671077425, 0.461927382, 0.05552363200000001 
+
+		 initial obj. :		0.13451666828887046 
+		 final obj. :		0.0838482744935393 
+		 relative :			0.623329997390938 
+		 no. PDE solves:	74 
+		 runtime: 			2.770252025
+
+ --- mipdecoHeuristic starting with massPreserving using dilation2--
+Trust region on entire space: MisFit, Regularizer, Total 0.055767350592421085 , 0.027679293282279974	, 0.08344664387470106
+Time to compute Data term, Regularizer, and MIP: 0.9580397419999999, 0.5871309670000001, 0.09730230999999998 
+
+		 initial obj. :		0.13451666828887046 
+		 final obj. :		0.08344664387470106 
+		 relative :			0.620344266150734 
+		 no. PDE solves:	100 
+		 runtime: 			4.118969011
+
+ --- mipdecoHeuristic starting with gapReduction using all--
+Trust region on entire space: MisFit, Regularizer, Total 0.015332559160549226 , 0.03343045742891693	, 0.04876301658946616
+Time to compute Data term, Regularizer, and MIP: 0.7766627190000002, 0.4308201, 0.08373226499999996 
+
+		 initial obj. :		0.12271766013490332 
+		 final obj. :		0.04876301658946616 
+		 relative :			0.3973594064282277 
+		 no. PDE solves:	88 
+		 runtime: 			1.298454843
+
+ --- mipdecoHeuristic starting with gapReduction using dilation1--
+Trust region on entire space: MisFit, Regularizer, Total 0.055188393716459616 , 0.028037396232898807	, 0.08322578994935842
+Time to compute Data term, Regularizer, and MIP: 0.755875879, 0.48898097500000004, 0.069013185 
+
+		 initial obj. :		0.12813216237629685 
+		 final obj. :		0.08322578994935842 
+		 relative :			0.6495308313375842 
+		 no. PDE solves:	80 
+		 runtime: 			3.117819683
+
+ --- mipdecoHeuristic starting with gapReduction using dilation2--
+Trust region on entire space: MisFit, Regularizer, Total 0.05530722276544067 , 0.027991652130383172	, 0.08329887489582384
+Time to compute Data term, Regularizer, and MIP: 0.80625733, 0.4917552319999999, 0.08164594 
+
+		 initial obj. :		0.12813216237629685 
+		 final obj. :		0.08329887489582384 
+		 relative :			0.650101218546463 
+		 no. PDE solves:	84 
+		 runtime: 			3.306309633

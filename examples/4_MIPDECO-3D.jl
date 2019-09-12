@@ -83,16 +83,27 @@ init = zeros(m[1],m[2],m[3],length(roundings),length(neighborhoods))
 His = zeros(pInv.maxIter,3,length(roundings),length(neighborhoods))
 times = zeros(length(roundings),length(neighborhoods))
 
-for k1=1:length(roundings)
+for k1=3:length(roundings)
     for k2=1:length(neighborhoods)
         println("\n --- mipdecoHeuristic starting with $(roundingsNames[k1]) using $(neighborhoodsNames[k2])--")
-        src0 = roundings[k1](srcRelaxed)
+        (t0,nsolve0) = (pFor.Ainv.solveTime, pFor.Ainv.nSolve)
+        roundTime = @elapsed begin
+            src0 = roundings[k1](srcRelaxed)
+        end
+        println("\t\ttime for rounding: $roundTime")
+        dt  = pFor.Ainv.solveTime - t0
+        println("\t\ttime for PDEsolves: $dt")
+        dn = pFor.Ainv.nSolve - nsolve0
+        println("\t\tnumber of PDEsolves: $dn")
         init[:,:,:,k1,k2] = src0
 
         times[k1,k2] = @elapsed begin
             mcTR,DcTR,flagTR,his = mipdecoHeuristic(src0,pInv,pMis,getNeighborhood=neighborhoods[k2],out=0)
             His[:,:,k1,k2] = his;
         end
+        nIter = findlast(His[:,1,k1,k2].>0)
+
+
         println("\t\t initial obj. :\t\t$(His[1,1,k1,k2]) ")
         println("\t\t final obj. :\t\t$(His[nIter,1,k1,k2]) ")
         println("\t\t relative :\t\t\t$(His[nIter,1,k1,k2]/His[1,1,k1,k2]) ")

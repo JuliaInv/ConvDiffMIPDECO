@@ -78,7 +78,10 @@ println("runtime:\t$runtimeRelaxed")
 # get number of PDE solves
 nCGIter = cgit * length(HisRelaxed.hisLinSol)
 nGNIter = count(HisRelaxed.Jc.>0)
-println("no. PDE solves:\t$(4*(nGNIter + nCGIter))")
+println("no. PDE solves:\t$(pFor.Ainv.nSolve)")
+println("time PDE factor:\t$(pFor.Ainv.facTime)")
+println("time PDE solves:\t$(pFor.Ainv.solveTime)")
+
 
 FieldsRelaxed        = uc
 SourcesRelaxed       = wr

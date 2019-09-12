@@ -1,6 +1,6 @@
 clc;clear; 
 
-load('../Sources3D.mat')
+load('Sources3D.mat')
 dataset = 'Sources3D';
  reg     = 'wTVReg';
 %  reg     = 'wTVReg';
@@ -14,7 +14,7 @@ figDir = '/Users/lruthot/Dropbox/Projects/2019-MIPDECOpaper/images/figSource3D/'
 
 
  
-fname = files(2).name;
+fname = files(1).name;
 load(fname)
 %%
 idx = 11;
@@ -27,7 +27,7 @@ ylabel('misfit');
 xlabel('regularizer');
 legend()
 if doPrint
-%     matlab2tikz(fullfile(figDir,regexprep(fname,'.mat','.tex')),'width','\iwidth','height','\iheight');   
+     matlab2tikz(fullfile(figDir,regexprep(fname,'.mat','.tex')),'width','\iwidth','height','\iheight');   
 end
 
 
@@ -54,16 +54,16 @@ axis equal tight
     end
 end
 
-%% plot solution of MIPDECO
+%% plot solution of SourcesMIPDECO
 xa = linspace(domain(1),domain(2),size(W,1));
 ya = linspace(domain(3),domain(4),size(W,2));
 xfine = getCellCenteredGrid(domain,size(W));
 [XA,YA] = meshgrid(xa,ya);
 if doPrint
-    for k=1:size(MIPDECO,4)
-        for j=1:size(MIPDECO,5)
+    for k=1:size(SourcesMIPDECO,4)
+        for j=1:size(SourcesMIPDECO,5)
             fig = figure(); clf;
-            mip = MIPDECO(:,:,:,k,j);
+            mip = SourcesMIPDECO(:,:,:,k,j);
             viewSlices(mip,domain,m,'s2',35,'s3',12,'s1',50);
             mip = reshape(nnInter(mip,domain,xfine),size(W));
             intersect = mip.*W;
@@ -75,21 +75,21 @@ if doPrint
             
             caxis([0 1]);
             axis off
-            printFigure(fig,fullfile(figDir,[dataset '-' reg '-' num2str(m(1)) 'x' num2str(m(2)) '-MIPDECO-' num2str(k) '-' num2str(j) '.png']),'printOpts','-dpng','printFormat','.png');
+            printFigure(fig,fullfile(figDir,[dataset '-' reg '-' num2str(m(1)) 'x' num2str(m(2)) '-SourcesMIPDECO-' num2str(k) '-' num2str(j) '.png']),'printOpts','-dpng','printFormat','.png');
             close(fig);
         end
     end
 end
 
-%% plot initiliztion of MIPDECO
+%% plot initiliztion of SourcesMIPDECO
 xa = linspace(domain(1),domain(2),size(W,1));
 ya = linspace(domain(3),domain(4),size(W,2));
 [XA,YA] = meshgrid(xa,ya);
 if doPrint
-    for k=1:size(MIPDECO,4)
-        for j=1:size(MIPDECO,5)
+    for k=1:size(SourcesMIPDECO,4)
+        for j=1:size(SourcesMIPDECO,5)
             fig = figure(); clf;
-            mip = MIPDECOinit(:,:,:,k,j);
+            mip = InitMIPDECO(:,:,:,k,j);
             viewSlices(mip,domain,m,'s2',35,'s3',12,'s1',50);
             mip = reshape(nnInter(mip,domain,xfine),size(W));
             intersect = mip.*W;
@@ -99,7 +99,7 @@ if doPrint
             axis equal off
             text(1.2,.2,sprintf('IoU=%1.1f%%',IoU*100),'FontSize',35,'Color','k')
             
-            printFigure(fig,fullfile(figDir,[dataset '-' reg '-' num2str(m(1)) 'x' num2str(m(2)) '-MIPDECOinit-' num2str(k) '-' num2str(j) '.png']),'printOpts','-dpng','printFormat','.png');
+            printFigure(fig,fullfile(figDir,[dataset '-' reg '-' num2str(m(1)) 'x' num2str(m(2)) '-InitMIPDECO-' num2str(k) '-' num2str(j) '.png']),'printOpts','-dpng','printFormat','.png');
             close(fig);
         end
     end
@@ -107,17 +107,17 @@ end
 
 %%
 if doPrint
-   for k=1:size(His,3)
-       for j=1:size(His,4)
-           his = His(:,:,k,j)
+   for k=1:size(HisMIPDECO,3)
+       for j=1:size(HisMIPDECO,4)
+           His = HisMIPDECO(:,:,k,j);
            fig = figure(); clf;
-           iter = numel(find(his(:,1)));
+           iter = numel(find(HisMIPDECO(:,1)));
            yyaxis left
-           plot(his(1:iter,1),'linewidth',3)
+           plot(HisMIPDECO(1:iter,1),'linewidth',3)
            ylabel('objective function')
            
            yyaxis right
-           plot(his(1:iter,3),'linewidth',3)
+           plot(HisMIPDECO(1:iter,3),'linewidth',3)
            ylabel('Trust Region radius')
            xlabel('iterations')
            set(gca,'FontSize',20)

@@ -99,10 +99,11 @@ for mk = 1:length(Meshes)
 				iter= findlast(His.F.>0.0)
 				Mis[ak] = His.F[iter]
 				Reg[ak] = His.Rc[iter]/alphas[ak]
-				nPDEsolves += 2*(iter+cgit)*iter
 		    end
 		end
-		println("\n no PDE solves: \t$nPDEsolves")
+		println("no. PDE solves:\t$(pFor.Ainv.nSolve)")
+		println("time PDE factor:\t$(pFor.Ainv.facTime)")
+		println("time PDE solves:\t$(pFor.Ainv.solveTime)")
 		println("\n overall runtime: $runtimeLcurve")
 
 		results = Dict("n"=>M.n, "Mis"=>Mis, "Reg"=>Reg, "alphas"=> alphas,
