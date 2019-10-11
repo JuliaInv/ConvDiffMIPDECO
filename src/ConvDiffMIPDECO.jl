@@ -103,5 +103,5 @@ include("getConvDiffFEMConstraintsAMPL.jl")
 include("mipdecoHeuristic.jl")
 include("rounding.jl")
 include("dilation.jl")
-
+include("regularizers.jl")
 end

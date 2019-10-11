@@ -6,7 +6,7 @@ authors = ["Lars Ruthotto <lruthotto@emory.edu>"]
 version = "0.0.1"
 
 [compat]
-julia = "1"
+julia = "1.1, 1.2"
 
 [deps]
 KrylovMethods = "9a2cd570-f05c-5dc1-9209-93ad6f5727f7"
