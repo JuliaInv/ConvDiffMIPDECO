@@ -4,6 +4,7 @@ using jInv.Mesh
 using jInv.ForwardShare
 using jInv.InverseSolve
 using jInv.LinearSolvers
+using MUMPSjInv
 using LinearAlgebra
 using MAT
 

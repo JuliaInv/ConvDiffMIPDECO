@@ -7,6 +7,8 @@ using jInv.InverseSolve
 using jInvVis
 using jInv.LinearSolvers
 using MAT
+using MUMPSjInv
+
 ENV["DYLD_LIBRARY_PATH"]="/usr/lib/"
 
 # filename= "2DmodelLShaped.mat"

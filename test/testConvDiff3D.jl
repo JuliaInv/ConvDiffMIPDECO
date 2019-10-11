@@ -6,6 +6,7 @@ using KrylovMethods
 using jInv.Mesh
 using SparseArrays
 using LinearAlgebra
+using MUMPSjInv
 
 domain = [0 1. 0 3. 0 2.]
 
@@ -29,15 +30,15 @@ times = zeros(length(N),3)
 for j=1:3
 	for k=1:length(N)
 		Ainvs = (getJuliaSolver(), getMUMPSsolver(),ConvDiffMIPDECO.getBICGSTB())
-		
+
 		nk      = [N[k];N[k];N[k]]
 		Mk  = getRegularMesh(domain,nk)
 		xck = getCellCenteredGrid(Mk)
-	
+
 		pFork   = getConvDiffParam(Mk,V,sig=sig,gd=u,bc=bc,Ainv=Ainvs[j])
-		
+
 		dobsk,pFork = getData(vec(f(xck)), pFork)
-		
+
 		utruek = u(xck)
 		times[k,j] = @elapsed begin
 			err[k] = norm(pFork.Fields - utruek,Inf)/norm(utruek,Inf)

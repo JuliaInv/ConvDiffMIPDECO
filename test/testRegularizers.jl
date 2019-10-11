@@ -25,17 +25,3 @@ for k=1:length(regFuns)
 	chkDer, = checkDerivative(testFun,mc,out=true)
 	@test chkDer
 end
-
-for k=1:length(regFuns)
-	# checkDerivative of $(regFuns[k])
-	function testFun(x,v=[])
-		Sc,dS,d2S = regFuns[k](x,0.0.*x,M)
-		if isempty(v)
-			return dS
-		else
-            return dS,d2S*v
-		end
-	end
-	chkDer, = checkDerivative(testFun,mc,out=true)
-	@test chkDer
-end

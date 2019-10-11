@@ -4,7 +4,9 @@ using jInv.ForwardShare
 using jInv.LinearSolvers
 using KrylovMethods
 using jInv.Mesh
+using MUMPSjInv
 using Statistics
+using LinearAlgebra
 
 domain = [0 1. 0 3. 0 2.]
 
@@ -27,19 +29,19 @@ pFor=1;
 for j=1:2
 	for k=1:length(N)
 		Ainvs = (getJuliaSolver(), getMUMPSsolver())
-	
+
 		nk  = [N[k];N[k];N[k]]
 		Mk  = getRegularMesh(domain,nk)
 		xck = getCellCenteredGrid(Mk)
 		xnk = getNodalGrid(Mk)
 		pFork = getConvDiffFEMParam(Mk,sig=sig,gd=u,bc=bc,Ainv=Ainvs[j])
-		
+
 		dobsk,pFork = getData(f(xck), pFork)
 		pFork.Fields .-= mean(pFork.Fields)
 		utruek = u(xnk)
 		utruek .-= mean(utruek)
-		
-		 times[k,j]= @elapsed begin  
+
+		 times[k,j]= @elapsed begin
 			 err[k] = norm(pFork.Fields - utruek,Inf)/norm(utruek,Inf)
 		 end
 		println(err[k])

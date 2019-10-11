@@ -3,6 +3,7 @@ using Test
 using ConvDiffMIPDECO
 using jInv.ForwardShare
 using jInv.Mesh
+using MUMPSjInv
 
 domain = [0 1. 0 1]
 
@@ -24,14 +25,14 @@ times = zeros(length(N),3)
 for j=1:2
 	for k=1:length(N)
 		Ainvs = (getJuliaSolver(), getMUMPSsolver())
-    	
-    	
+
+
 		nk      = [N[k];N[k]]
 		Mk  = getRegularMesh(domain,nk)
 		xck = getCellCenteredGrid(Mk)
 		xnk = getNodalGrid(Mk)
 		pFork = getConvDiffFEMParam(Mk,sig=sig,v=v,bc=(:dir,:neu,:neu,:neu),gd=u,Ainv=Ainvs[j])
-		
+
 		dobsk,pFork = getData(f(xck), pFork)
 		# pFor.Fields -= mean(pFor.Fields)
 		utruek = u(xnk)

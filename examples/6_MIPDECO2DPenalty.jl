@@ -3,8 +3,9 @@ using jInv.Mesh
 using jInv.ForwardShare
 using jInv.InverseSolve
 using jInv.LinearSolvers
+using MUMPSjInv
 using MAT
-using jInvVis
+# using jInvVis
 
 # read results from l-curve
 dataset    = "Peaks2D"
@@ -45,7 +46,6 @@ pMis       = getMisfitParam(pFor,Wt,dobs,SSDFun)
 ## Configure regularization
 mref       = zeros(M.nc)
 reg        = (m,mr,M,I=1.0) -> wTVReg(m,mr,M,eps=1e-8)
-# reg        = (m,mr,M,I=1.0) -> wTVReg(m,mr,M,eps=1e-8)
 
 ## Configure optimization
 maxIter    = 50
@@ -84,6 +84,7 @@ for k1=1:nrow
         println("\n --- mipdecoHeuristic starting with Ms[:,$k1] using $(neighborhoodsNames[k2])--")
         (t0,nsolve0) = (pFor.Ainv.solveTime, pFor.Ainv.nSolve)
 
+        src0 = naiveRounding(Ms[:,k1])
         init[:,:,k1,k2] = src0
 
 
@@ -94,12 +95,12 @@ for k1=1:nrow
 		end
         nIter = findlast(His[:,1,k1,k2].>0)
 
-        p1 = viewImage2D(Ms[:,k1],M)
-        p2 = viewImage2D(src0,M)
-        p3 = viewImage2D(mcTR,M)
-        p4 = viewImage2D((mcTr-src0),M)
-        pt = plot(p1,p2,p3,p4,layout=(4,1))
-        display(pt)
+        # p1 = viewImage2D(Ms[:,k1],M)
+        # p2 = viewImage2D(src0,M)
+        # p3 = viewImage2D(mcTR,M)
+        # p4 = viewImage2D((mcTr-src0),M)
+        # pt = plot(p1,p2,p3,p4,layout=(4,1))
+        # display(pt)
 
         println("\t\t initial obj. :\t\t$(His[1,1,k1,k2]) ")
         println("\t\t final obj. :\t\t$(His[nIter,1,k1,k2]) ")

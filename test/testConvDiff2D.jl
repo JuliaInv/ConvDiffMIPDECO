@@ -5,6 +5,7 @@ using jInv.ForwardShare
 using jInv.Mesh
 using LinearAlgebra
 using SparseArrays
+using MUMPSjInv
 
 domain = [0 1. 0 1]
 
@@ -35,9 +36,9 @@ for j=1:2
 	xck = getCellCenteredGrid(Mk)
 
 	pFork   = getConvDiffParam(Mk,V,sig=sig,gd=u,gn=ux,bc=bc,Ainv=Ainvs[j])
-	
+
 	dobsk,pFork = getData(f(xck), pFork)
-	
+
 	utruek = u(xck)
 	times[k,j]= @elapsed begin
 		err[k] = norm(pFork.Fields - utruek,Inf)/norm(utruek,Inf)

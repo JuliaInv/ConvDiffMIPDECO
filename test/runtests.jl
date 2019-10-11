@@ -41,4 +41,8 @@ end
 @testset "getConvDiffFEMConstraintsAMPL" begin
 	include("testGetConvDiffFEMConstraintsAMPL.jl")
 end
+
+@testset "regularizers" begin
+	include("testRegularizers.jl")
+end
 end
