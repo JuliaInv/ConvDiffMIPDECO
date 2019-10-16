@@ -2,14 +2,15 @@
 Example for solving a Mixed-integer PDE-constrained optimization problem in jInv.
 
 ## Reference
-
 This code implements the ideas described in
 
+```
   @article{SharmaEtAl2019,
       Title = {Inversion of {C}onvection-{D}iffusion {E}quations with Discrete Sources},
       Year = {2019},
       Author = {M. Sharma, M. Hahn, S. Leyffer, L. Ruthotto, B van Bloemen Waanders}
   }
+```
 
 ## Acknowledgements
 
