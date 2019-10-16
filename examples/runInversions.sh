@@ -1,9 +1,16 @@
 #!/bin/sh
 
-julia 3_Lcurve2D.jl > 3_Lcurve2D.txt
-julia 4_RelaxedSolve2D.jl > 4_RelaxedSolve2D.txt
-julia 5_MIPDECO2D.jl > 5_MIPDECO2D.txt
+julia 1_GenerateData.jl > 1_GenerateData.txt
+julia 2_Lcurve2D.jl > 2_Lcurve2D.txt
+julia 3_RelaxedSolve2D.jl > 3_RelaxedSolve2D.txt
+julia 4_MIPDECO2D.jl > 4_MIPDECO2D.txt
+julia 5_Penalty2D.jl > 5_Penalty2D.txt
+julia 6_MIPDECO2DPenalty.jl > 6_MIPDECO2DPenalty.txt
 
-julia 3_Lcurve3D.jl > 3_Lcurve3D.txt
-julia 4_RelaxedSolve3D.jl > 4_RelaxedSolve3D.txt
-julia 5_MIPDECO3D.jl > 5_MIPDECO3D.txt
+
+julia 1_GenerateData.jl > 1_GenerateData.txt
+julia 2_Lcurve3D.jl > 2_Lcurve3D.txt
+julia 3_RelaxedSolve3D.jl > 3_RelaxedSolve3D.txt
+julia 4_MIPDECO3D.jl > 4_MIPDECO3D.txt
+julia 5_Penalty3D.jl > 5_Penalty3D.txt
+julia 6_MIPDECO3DPenalty.jl > 6_MIPDECO3DPenalty.txt
