@@ -1,15 +1,15 @@
+ENV["DYLD_LIBRARY_PATH"]="/usr/lib/"
 
 using ConvDiffMIPDECO
-using PyPlot
+# using PyPlot
 using jInv.Mesh
 using jInv.ForwardShare
 using jInv.InverseSolve
-using jInvVis
+# using jInvVis
 using jInv.LinearSolvers
 using MAT
 using MUMPSjInv
 
-ENV["DYLD_LIBRARY_PATH"]="/usr/lib/"
 
 # filename= "2DmodelLShaped.mat"
 filename= joinpath(dirname(pathof(ConvDiffMIPDECO)),"examples","Peaks2D.mat")
