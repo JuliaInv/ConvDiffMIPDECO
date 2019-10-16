@@ -1,7 +1,7 @@
 #!/bin/sh
 
-matlab getPeaksModel2D.m
-matlab getModel3D.m
+# matlab getPeaksModel2D.m
+# matlab getModel3D.m
 
 julia 1_GenerateData.jl > 1_GenerateData.txt
 julia 2_Lcurve2D.jl > 2_Lcurve2D.txt
