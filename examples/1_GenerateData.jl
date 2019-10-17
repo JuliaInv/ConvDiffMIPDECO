@@ -12,17 +12,17 @@ using MUMPSjInv
 
 
 # filename= "2DmodelLShaped.mat"
-filename= joinpath(dirname(pathof(ConvDiffMIPDECO)),"examples","Peaks2D.mat")
+filename= joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples","Peaks2D.mat")
 file = matread(filename)
 wtrue = vec(file["W"]) ## Sources on finest mesh
 domain = file["domain"]
 m      = file["m"]
 
 M      = getRegularMesh(domain,m)
-viewImage2D(wtrue,M)
+# viewImage2D(wtrue,M)
 
 rec = rand(200,2) .*[domain[2] domain[4]]
-plot(rec[:,1],rec[:,2],".r")
+# plot(rec[:,1],rec[:,2],".r")
 
 
 # build linear interpolation matrix from nodes to receiver locations
@@ -43,6 +43,7 @@ file["v"]      = pFor.v
 
 matwrite(filename,file)
 
-viewImage2D(utrue,getPaddedMesh(M))
-plot(rec[:,1],rec[:,2],".r")
-title("true fields")
+# viewImage2D(utrue,getPaddedMesh(M))
+#plot(rec[:,1],rec[:,2],".r")
+#
+# title("true fields")
