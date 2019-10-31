@@ -7,11 +7,11 @@ function heuristicKnapsack(mc,gc,delta)
     wCount = 0
 	for j=1:length(cIndex)
 		ind = cIndex[Int(j)]
-			  if  gc[ind] >= 0 && mc[ind] == 1
+			  if  gc[ind] > 0 && mc[ind] == 1
 				mt[ind] = 0
 				pred -= gc[ind]
                 wCount += 1
-			  elseif  gc[ind] <= 0 && mc[ind] == 0
+			  elseif  gc[ind] < 0 && mc[ind] == 0
 				mt[ind] = 1
 				pred += gc[ind]
                 wCount += 1
