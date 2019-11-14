@@ -34,6 +34,15 @@ dobs = res["dobs"]
 srcRelaxed = res["SourcesRelaxed"]
 alphaRelaxed = res["alphaRelaxed"]
 
+println("solve using alpha = $(alphaRelaxed)")
+
+noiseLevel = norm(dobs-dtrue)/norm(dtrue)
+println("estimated noise level: $noiseLevel")
+if noiseLevel > 0.5
+    error("noise level too large, double check that data was loaded correctly. ")
+end
+
+
 # build inverse problem
 Mfine = getRegularMesh(domain,vec(data["m"]));
 x1c,x2c,x3c = getCellCenteredAxes(Mfine)

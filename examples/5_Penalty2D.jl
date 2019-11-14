@@ -25,12 +25,23 @@ M = getRegularMesh(domain,m)
 resFile = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
                     "$(dataset)-$(reg)-noise-$(noiseLevel)-$(m[1])x$(m[2]).mat")
 res = matread(resFile)
-resFile = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
-                    "$(dataset)-$(reg)-noise-$(noiseLevel)-$(m[1])x$(m[2])-penalty.mat")
 dobs = res["dobs"]
 
 srcRelaxed = res["SourcesRelaxed"]
 alphaRelaxed = res["alphaRelaxed"]
+
+resFilePenalty = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
+                    "$(dataset)-$(reg)-noise-$(noiseLevel)-$(m[1])x$(m[2])-penalty.mat")
+
+
+println("solve using alpha = $(alphaRelaxed)")
+
+noiseLevel = norm(dobs-dtrue)/norm(dtrue)
+println("estimated noise level: $noiseLevel")
+if noiseLevel > 0.5
+    error("noise level too large, double check that data was loaded correctly. ")
+end
+
 
 # build inverse problem
 x1,x2 = getNodalAxes(M)
@@ -66,7 +77,7 @@ pInv       = getInverseParam(M,modFun,reg,[alphaRelaxed;0.0],mref,
                             HesPrec=HesPrec);
 
 mc = mref[:,1].+0.1
-# viewImage2D(mc,M)
+ viewImage2D(mc,M)
 println("alpha:\t\t\t\t$(pInv.alpha)")
 println("no. cells:\t\t\t$(length(mc))")
 println("no. nodes:\t\t\t$(size(P,2))")
@@ -77,8 +88,8 @@ runtimeRelaxed = @elapsed begin
     wr = pInv.modelfun(mc)[1]; # w variables
 end
 
-# p=viewImage2D(mc,M)
-# display(p)
+p=viewImage2D(mc,M)
+display(p)
 
 
 println("\n\n--Penalty method--\n")
@@ -100,8 +111,8 @@ for iter=1:Imax
     Ms[:,iter+1] = mround;
     pInv.alpha[2] *= 2
 
-    # p=viewImage2D(mround,M)
-    # display(p)
+    p=viewImage2D(mround,M)
+    display(p)
 end
 end
 println("runtime:\t$runtimePenalty")
@@ -117,4 +128,4 @@ res["runtimePenalty"] = runtimeRelaxed
 res["alphaPenalty"] = pInv.alpha
 res["HisRelaxed"] = HisRelaxed
 
-matwrite(resFile,res)
+matwrite(resFilePenalty,res)

@@ -27,8 +27,18 @@ resFile = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
 res = matread(resFile)
 dobs = res["dobs"]
 
+
+
 srcRelaxed = res["SourcesRelaxed"]
 alphaRelaxed = res["alphaRelaxed"]
+
+println("solve using alpha = $(alphaRelaxed)")
+
+noiseLevel = norm(dobs-dtrue)/norm(dtrue)
+println("estimated noise level: $noiseLevel")
+if noiseLevel > 0.5
+    error("noise level too large, double check that data was loaded correctly. ")
+end
 
 # build inverse problem
 x1,x2 = getNodalAxes(M)

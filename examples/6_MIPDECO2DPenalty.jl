@@ -5,7 +5,7 @@ using jInv.InverseSolve
 using jInv.LinearSolvers
 using MUMPSjInv
 using MAT
-# using jInvVis
+using jInvVis
 
 # read results from l-curve
 dataset    = "Peaks2D"
@@ -31,6 +31,13 @@ dobs = res["dobs"]
 srcRelaxed   = res["SourcesRelaxed"]
 alphaRelaxed = res["alphaRelaxed"]
 Ms           = res["Ms"]
+
+println("solve using alpha = $(alphaRelaxed)")
+noiseLevel = norm(dobs-dtrue)/norm(dtrue)
+println("estimated noise level: $noiseLevel")
+if noiseLevel > 0.5
+    error("noise level too large, double check that data was loaded correctly. ")
+end
 
 
 # build inverse problem
@@ -95,12 +102,17 @@ for k1=1:nrow
 		end
         nIter = findlast(His[:,1,k1,k2].>0)
 
-        # p1 = viewImage2D(Ms[:,k1],M)
-        # p2 = viewImage2D(src0,M)
-        # p3 = viewImage2D(mcTR,M)
-        # p4 = viewImage2D((mcTr-src0),M)
-        # pt = plot(p1,p2,p3,p4,layout=(4,1))
-        # display(pt)
+        p1 = viewImage2D(Ms[:,k1],M)
+        title!("relaxed solution")
+        plot!(rec[:,1],rec[:,2],seriestype=:scatter,legend=false)
+        p2 = viewImage2D(1.0.*src0,M)
+        title!("starting guess")
+        p3 = viewImage2D(1.0.*mcTR,M)
+        title!("MIPDECO result")
+        p4 = viewImage2D(1.0.*(mcTR-src0),M)
+        title!("update")
+        pt = plot(p1,p2,p3,p4)
+        display(pt)
 
         println("\t\t initial obj. :\t\t$(His[1,1,k1,k2]) ")
         println("\t\t final obj. :\t\t$(His[nIter,1,k1,k2]) ")

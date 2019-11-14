@@ -93,6 +93,10 @@ for mk = 1:length(Meshes)
 				uc = pFor.Fields;          # u variables
 				wr = pInv.modelfun(mc)[1]; # w variables
 
+				pk =viewImage2D(mc,M)
+				title!("alpha=$(pInv.alpha)")
+				display(pk)
+
 				Fields[:,ak] = uc;
 				Sources[:,ak] = wr
 				PredictedData[:,ak] = Dc

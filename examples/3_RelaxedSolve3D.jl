@@ -32,7 +32,15 @@ dobs = res["dobs"]
 
 
 idx = 12;
-alpha = res["alphas"][idx]
+alph = res["alphas"][idx]
+
+println("solve using alpha = $(alph)")
+
+noiseLevel = norm(dobs-dtrue)/norm(dtrue)
+println("estimated noise level: $noiseLevel")
+if noiseLevel > 0.5
+    error("noise level too large, double check that data was loaded correctly. ")
+end
 
 
 # build inverse problem
@@ -67,14 +75,14 @@ boundsHigh = 1*ones(M.nc)
 maxStep	   = 0.1*maximum(boundsHigh)
 
 ## store the configuration
-pInv       = getInverseParam(M,modFun,reg,alpha,mref,
+pInv       = getInverseParam(M,modFun,reg,alph,mref,
                              boundsLow,boundsHigh,maxStep=maxStep,
                             pcgMaxIter=cgit,pcgTol=pcgTol,minUpdate=minUpdate,maxIter=maxIter,
                             HesPrec=HesPrec);
 
 mc = mref.+0.1
 
-println("alpha:\t\t\t\t$(alpha)")
+println("alpha:\t\t\t\t$(alph)")
 println("no. cells:\t\t\t$(length(mc))")
 println("no. nodes:\t\t\t$(size(P,2))")
 println("no. measurements:\t$(size(P,1))")
@@ -104,7 +112,7 @@ res["FieldsRelaxed"] = FieldsRelaxed
 res["SourcesRelaxed"] = SourcesRelaxed
 res["PredictedDataRelaxed"] = PredictedDataRelaxed
 res["runtimeRelaxed"] = runtimeRelaxed
-res["alphaRelaxed"] = alpha
+res["alphaRelaxed"] = alph
 res["HisRelaxed"] = HisRelaxed
 
 matwrite(resFile,res)
