@@ -5,6 +5,8 @@ using jInv.InverseSolve
 using jInv.LinearSolvers
 using MUMPSjInv
 using MAT
+using LinearAlgebra
+
 
 # read results from l-curve
 dataset    = "Sources3D"
@@ -35,7 +37,6 @@ resFilePenalty = joinpath(dirname(pathof(ConvDiffMIPDECO)),"..","examples",
 
 
 println("solve using alpha = $(alphaRelaxed)")
-
 noiseLevel = norm(dobs-dtrue)/norm(dtrue)
 println("estimated noise level: $noiseLevel")
 if noiseLevel > 0.5

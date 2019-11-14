@@ -5,6 +5,7 @@ using jInv.InverseSolve
 using jInv.LinearSolvers
 using MUMPSjInv
 using MAT
+using LinearAlgebra
 
 # read results from l-curve
 dataset    = "Peaks2D"
