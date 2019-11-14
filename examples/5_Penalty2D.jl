@@ -77,7 +77,7 @@ pInv       = getInverseParam(M,modFun,reg,[alphaRelaxed;0.0],mref,
                             HesPrec=HesPrec);
 
 mc = mref[:,1].+0.1
- viewImage2D(mc,M)
+ # viewImage2D(mc,M)
 println("alpha:\t\t\t\t$(pInv.alpha)")
 println("no. cells:\t\t\t$(length(mc))")
 println("no. nodes:\t\t\t$(size(P,2))")
@@ -88,8 +88,8 @@ runtimeRelaxed = @elapsed begin
     wr = pInv.modelfun(mc)[1]; # w variables
 end
 
-p=viewImage2D(mc,M)
-display(p)
+# p=viewImage2D(mc,M)
+# display(p)
 
 
 println("\n\n--Penalty method--\n")
@@ -111,8 +111,8 @@ for iter=1:Imax
     Ms[:,iter+1] = mround;
     pInv.alpha[2] *= 2
 
-    p=viewImage2D(mround,M)
-    display(p)
+    # p=viewImage2D(mround,M)
+    # display(p)
 end
 end
 println("runtime:\t$runtimePenalty")

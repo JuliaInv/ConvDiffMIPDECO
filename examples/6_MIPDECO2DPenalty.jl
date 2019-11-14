@@ -5,7 +5,8 @@ using jInv.InverseSolve
 using jInv.LinearSolvers
 using MUMPSjInv
 using MAT
-using jInvVis
+# using jInvVis
+using LinearAlgebra
 
 # read results from l-curve
 dataset    = "Peaks2D"
@@ -102,17 +103,17 @@ for k1=1:nrow
 		end
         nIter = findlast(His[:,1,k1,k2].>0)
 
-        p1 = viewImage2D(Ms[:,k1],M)
-        title!("relaxed solution")
-        plot!(rec[:,1],rec[:,2],seriestype=:scatter,legend=false)
-        p2 = viewImage2D(1.0.*src0,M)
-        title!("starting guess")
-        p3 = viewImage2D(1.0.*mcTR,M)
-        title!("MIPDECO result")
-        p4 = viewImage2D(1.0.*(mcTR-src0),M)
-        title!("update")
-        pt = plot(p1,p2,p3,p4)
-        display(pt)
+        # p1 = viewImage2D(Ms[:,k1],M)
+        # title!("relaxed solution")
+        # plot!(rec[:,1],rec[:,2],seriestype=:scatter,legend=false)
+        # p2 = viewImage2D(1.0.*src0,M)
+        # title!("starting guess")
+        # p3 = viewImage2D(1.0.*mcTR,M)
+        # title!("MIPDECO result")
+        # p4 = viewImage2D(1.0.*(mcTR-src0),M)
+        # title!("update")
+        # pt = plot(p1,p2,p3,p4)
+        # display(pt)
 
         println("\t\t initial obj. :\t\t$(His[1,1,k1,k2]) ")
         println("\t\t final obj. :\t\t$(His[nIter,1,k1,k2]) ")

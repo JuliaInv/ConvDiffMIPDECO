@@ -5,6 +5,7 @@ using jInv.InverseSolve
 using jInv.LinearSolvers
 using MUMPSjInv
 using MAT
+using LinearAlgebra
 # using jInvVis
 
 # read results from l-curve
